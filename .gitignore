@@ -1,0 +1,32 @@
+# FRONTEND (React)
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+frontend/.parcel-cache/
+frontend/.vite/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# BACKEND (Django / Python)
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/venv/
+backend/env/
+backend/db.sqlite3
+
+# MAC & EDITOR FILES
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Python venvs
+venv/
+env/
+.venv/
+
+# General logs
+*.log
