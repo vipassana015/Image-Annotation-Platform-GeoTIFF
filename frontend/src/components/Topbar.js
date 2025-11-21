@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Topbar() {
+function Topbar({ onCreate }) {
   const [activeFilter, setActiveFilter] = useState("Recently");
 
   return (
@@ -29,7 +29,7 @@ function Topbar() {
       </div>
 
         <div className="topbar-right">
-          <button className="create-project">+ Create Project</button>
+          <button className="create-project"  onClick={onCreate}>+ Create Project</button>
           <button className="sort-by">Sort By</button>
           <button className="view-by">View By</button>
         </div>

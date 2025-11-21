@@ -4,6 +4,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import Dashboard from "./pages/Dashboard";
 import UploadPage from "./pages/UploadPage";
+import NewProjectPage from "./pages/NewProjectPage";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<UploadPage />} />
+        <Route path="/projects/new" element={<NewProjectPage />} />
       </Routes>
     </Router>
   );

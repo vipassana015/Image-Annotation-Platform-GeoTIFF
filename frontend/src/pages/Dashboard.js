@@ -34,7 +34,8 @@ function Dashboard() {
     <div className="dashboard">
       <Sidebar username={username} />
       <div className="dashboard-main">
-        <Topbar />
+       <Topbar onCreate={() => navigate("/projects/new")} />
+
         <div className="project-grid">
           {projects.length > 0 ? (
             projects.map((p) => <ProjectCard key={p.id} project={p} />)
