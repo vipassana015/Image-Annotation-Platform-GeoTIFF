@@ -1,32 +1,76 @@
-# FRONTEND (React)
-frontend/node_modules/
-frontend/.env
-frontend/dist/
-frontend/build/
-frontend/.parcel-cache/
-frontend/.vite/
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-
-# BACKEND (Django / Python)
-backend/__pycache__/
-backend/*.pyc
-backend/.env
-backend/venv/
-backend/env/
-backend/db.sqlite3
-
-# MAC & EDITOR FILES
+# =========================
+# 🔹 OS & Editor
+# =========================
 .DS_Store
 .vscode/
 .idea/
 *.swp
 
-# Python venvs
+# =========================
+# 🔹 Python / Django
+# =========================
+__pycache__/
+*.pyo
+*.pyd
+**/__pycache__/
+*.pyc
+
+# Virtual environments
 venv/
 env/
 .venv/
 
-# General logs
+# Django specific
+db.sqlite3
 *.log
+
+# =========================
+# 🔹 Node / React (GLOBAL)
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React build files
+frontend/build/
+frontend/dist/
+frontend/.parcel-cache/
+frontend/.vite/
+
+# Env files
+.env
+frontend/.env
+backend/.env
+
+# =========================
+# 🔹 Backend specific (IMPORTANT)
+# =========================
+backend/node_modules/
+
+# Uploaded & generated data (VERY IMPORTANT)
+backend/uploads/
+backend/thumbnails/
+backend/temp_exports/
+
+# Media / dataset outputs
+*.zip
+*.tiff
+*.tif
+*.png
+*.jpg
+*.jpeg
+
+# =========================
+# 🔹 Migrations cache (not migrations themselves)
+# =========================
+**/migrations/__pycache__/
+
+# =========================
+# 🔹 Misc
+# =========================
+*.sqlite3
+
+backend/logfile
+backend/package-lock.json
+backend/package.json

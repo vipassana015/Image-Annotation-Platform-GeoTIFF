@@ -1,126 +1,147 @@
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  LogOut,
-  Settings,
-  Bell,
-  Trash2,
-  HelpCircle,
-  Moon,
-  Users,
-  LayoutDashboard,
-  FolderKanban,
-  ChevronDown,
-} from "lucide-react";
-import userIcon from "../images/user.png";
-import "../pages/Dashboard.css";
+    LogOut,
+    Settings,
+    Bell,
+    Trash2,
+    HelpCircle,
+    Moon,
+    Users,
+    LayoutDashboard,
+    FolderKanban,
+    ChevronDown,
+  } from "lucide-react";
+  import userIcon from "../images/user.png";
+  import "../pages/Dashboard.css";
 
-function Sidebar({ username }) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("Projects");
+ function Sidebar({ username, setActiveTab, activeTab, unreadCount  }) {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [profileImage, setProfileImage] = useState(null);
+    const [darkMode, setDarkMode] = useState(false);
+    const dropdownRef = useRef();
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+      localStorage.clear();
+      window.location.href = "/login";
+    };
+
+    const userInitial = username ? username.charAt(0).toUpperCase() : "U";
+
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
   };
+}, []);
 
-  const userInitial = username ? username.charAt(0).toUpperCase() : "U";
+    return (
+      <div className="sidebar">
+        {/* USER DROPDOWN SECTION */}
+        <div className="user-section" ref={dropdownRef}>
+          <button
+          className={`username-btn no-bg ${dropdownOpen ? "active" : ""}`}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+              <div className="user-initial-circle">{userInitial}</div>
+              <span>{username || "User"} <ChevronDown /></span>
+          </button>
 
-  return (
-    <div className="sidebar">
-      {/* USER DROPDOWN SECTION */}
-      <div className="user-section">
-        <button
-         className={`username-btn no-bg ${dropdownOpen ? "active" : ""}`}
-        onClick={() => setDropdownOpen(!dropdownOpen)}
-        >
-            <div className="user-initial-circle">{userInitial}</div>
-            <span>{username || "User"} <ChevronDown /></span>
-        </button>
-
-        {dropdownOpen && (
-          <div className="dropdown-panel">
-            <div className="profile-section">
-              <img src={userIcon} alt="User" className="profile-img-centered" />
-              <p className="user-name">{username || "Username"}</p>
-              <p className="user-email">abc123@gmail.com</p>
-            </div>
-
-            <div className="dropdown-options">
-              <div className="dropdown-item">
-                <Settings size={16} />
-                <span>Settings</span>
+          {dropdownOpen && (
+            <div className="dropdown-panel">
+              <div className="profile-section">
+                <img src={userIcon} alt="User" className="profile-img-centered" />
+                <p className="user-name">{username || "Username"}</p>
+                <p className="user-email">abc123@gmail.com</p>
               </div>
-              <div
-                className="dropdown-item"
-                onClick={() => setDarkMode(!darkMode)}
-              >
-                <Moon size={16} />
-                <span>Theme</span>
+
+              <div className="dropdown-options">
+                <div className="dropdown-item">
+                  <Settings size={16} />
+                  <span>Settings</span>
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => setDarkMode(!darkMode)}
+                >
+                  <Moon size={16} />
+                  <span>Theme</span>
+                </div>
+              </div>
+
+              <hr className="divider" />
+
+              <div className="dropdown-item logout" onClick={handleLogout}>
+                <LogOut size={16} />
+                <span>Sign Out</span>
               </div>
             </div>
+          )}
+        </div>
 
-            <hr className="divider" />
-
-            <div className="dropdown-item logout" onClick={handleLogout}>
-              <LogOut size={16} />
-              <span>Sign Out</span>
-            </div>
+        {/* MAIN MENU */}
+        <div className="menu-top">
+          <div
+            className={`menu-item ${activeTab === "recent" ? "active" : ""}`}
+            onClick={() => navigate("/dashboard/recent")}
+          >
+            <FolderKanban size={16} /> Projects
           </div>
-        )}
-      </div>
+          <div
+            className={`menu-item ${activeTab === "activity" ? "active" : ""}`}
+            onClick={() => navigate("/dashboard/activity")}
+          >
+            <LayoutDashboard size={16} /> Activity
+          </div>
+          <div
+  className={`menu-item ${activeTab === "notifications" ? "active" : ""}`}
+ onClick={() => navigate("/dashboard/notifications")}
+>
+  <Bell size={16} /> Notifications
 
-      {/* MAIN MENU */}
-      <div className="menu-top">
-        <div
-          className={`menu-item ${activeMenu === "Projects" ? "active" : ""}`}
-          onClick={() => setActiveMenu("Projects")}
-        >
-          <FolderKanban size={16} /> Projects
+  {unreadCount > 0 && (
+    <span className="badge">{unreadCount}</span>
+  )}
+</div>
         </div>
-        <div
-          className={`menu-item ${activeMenu === "Admin" ? "active" : ""}`}
-          onClick={() => setActiveMenu("Admin")}
-        >
-          <LayoutDashboard size={16} /> Admin View
-        </div>
-        <div
-          className={`menu-item ${activeMenu === "Notifications" ? "active" : ""}`}
-          onClick={() => setActiveMenu("Notifications")}
-        >
-          <Bell size={16} /> Notifications
-        </div>
-      </div>
 
-      <hr className="divider" />
+        <hr className="divider" />
 
-      {/* MIDDLE MENU */}
-      <div className="menu-middle">
-        <div
-          className={`menu-item ${activeMenu === "Team" ? "active" : ""}`}
-          onClick={() => setActiveMenu("Team")}
-        >
-          <Users size={16} /> Team Projects
+        {/* MIDDLE MENU */}
+        <div className="menu-middle">
+          <div
+          className={`menu-item ${activeTab === "shared" ? "active" : ""}`}
+         onClick={() => navigate("/dashboard/shared")}>
+  <Users size={16} /> Shared with Me
+</div>
         </div>
-      </div>
 
-      {/* BOTTOM MENU */}
-      <div className="menu-bottom">
-        <div
-          className={`menu-item ${activeMenu === "Trash" ? "active" : ""}`}
-          onClick={() => setActiveMenu("Trash")}
-        >
-          <Trash2 size={16} /> Trash
-        </div>
-        <div
-          className={`menu-item ${activeMenu === "Help" ? "active" : ""}`}
-          onClick={() => setActiveMenu("Help")}
-        >
-          <HelpCircle size={16} /> Help / Support
+        {/* BOTTOM MENU */}
+        <div className="menu-bottom">
+          <div
+            className={`menu-item ${activeTab === "trash" ? "active" : ""}`}
+           onClick={() => navigate("/dashboard/trash")}
+          >
+            <Trash2 size={16} /> Trash
+          </div>
+          <div
+            className={`menu-item ${activeTab === "help" ? "active" : ""}`}
+           onClick={() => navigate("/dashboard/help")}
+          >
+            <HelpCircle size={16} /> Help / Support
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default Sidebar;
+  export default Sidebar;

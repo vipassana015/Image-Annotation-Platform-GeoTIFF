@@ -9,23 +9,23 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://127.0.0.1:8000/api/login/", {
-        username,
-        password,
-      });
+  e.preventDefault();
+  try {
+    const res = await axios.post("http://127.0.0.1:8000/api/token/", {
+      username,
+      password,
+    });
 
-      // Store user data in localStorage
-      localStorage.setItem("user_id", res.data.user_id);
-      localStorage.setItem("username", username);
+    // Store JWT tokens ONLY
+    localStorage.setItem("access_token", res.data.access);
+    localStorage.setItem("refresh_token", res.data.refresh);
 
-      alert("Login successful! User ID: " + res.data.user_id);
-      navigate("/dashboard"); // redirect to dashboard
-    } catch (err) {
-      alert("Invalid credentials");
-    }
-  };
+    alert("Login successful");
+    navigate("/dashboard");
+  } catch (err) {
+    alert("Invalid credentials");
+  }
+};
 
   return (
     <form onSubmit={handleLogin}>

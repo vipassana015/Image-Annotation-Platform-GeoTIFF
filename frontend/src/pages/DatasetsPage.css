@@ -1,0 +1,347 @@
+  
+.annotate-main {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.upload-main {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+}
+.upload-container {
+  height: 100vh;
+  display: flex;
+  overflow: visible;
+}
+
+/* Wrapper that controls annotate page width */
+.annotate-content {
+  width: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 40px;
+  overflow-y: visible; 
+}
+
+/* Section that holds the batch list */
+.annotate-batch-section {
+  width: 80%;
+  min-height: 100%;
+  align-self: stretch;
+}
+
+/* =====================================================
+   BATCH LIST
+   ===================================================== */
+
+.batch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 30px;
+}
+
+/* =====================================================
+   BATCH CARD (HORIZONTAL LAYOUT)
+   ===================================================== */
+
+.batch-card {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;        /* thumbnail left, content right */
+  align-items: flex-start;
+  gap: 20px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+
+  padding: 16px 20px;
+  cursor: pointer;
+
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.batch-card:hover {
+  border-color: #3a3a3a;
+  background: #222222;
+}
+
+.batch-card.active {
+  border-color: #444;
+  background: #262626;
+}
+
+/* =====================================================
+   BATCH THUMBNAIL (LEFT COLUMN)
+   ===================================================== */
+
+.batch-thumb {
+  width: 120px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.thumb-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: #2a2a2a;
+  overflow: hidden;
+}
+
+.batch-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =====================================================
+   BATCH CONTENT (RIGHT COLUMN)
+   ===================================================== */
+
+.batch-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Batch title */
+.batch-header strong {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Created date */
+.batch-meta {
+  font-size: 12px;
+  color: #888;
+}
+
+.batch-counts {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.thumb-box img {
+  transition: transform 0.2s ease;
+}
+
+.thumb-box:hover img {
+  transform: scale(1.05);
+}
+
+/* ===============================
+   IMAGE SELECTION
+================================ */
+
+.image-card {
+  position: relative;
+}
+
+/* Checkbox */
+.image-checkbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* Hide checkbox by default */
+.image-checkbox {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show on hover */
+.image-card:hover .image-checkbox {
+  opacity: 1;
+}
+
+/* Always show if selected */
+.image-card.selected .image-checkbox {
+  opacity: 1;
+}
+
+/* Selected image highlight ONLY on thumbnail */
+.image-card.selected .thumb {
+  outline: 2px solid #86869b;
+  border-radius: 8px;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.dataset-toolbar {
+  top: 10px;
+  gap: 50px;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+
+/* LEFT group (selection box area) */
+.toolbar-left-group {
+  display: flex;
+  align-items: center;
+}
+
+.selection-bar-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  height: 40px;
+ padding: 0 8px 0 16px;
+
+  min-width: 750px;     
+  width: fit-content;  
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.selection-actions {
+  margin-left: auto;     /* 🔥 THIS pushes buttons to right */
+  display: flex;
+  gap: 10px;
+}
+
+.selection-bar-inline span {
+  font-size: 13px;
+  color: #ccc;
+}
+
+.toolbar-butn {
+  min-width: 80px;        
+  height: 30px;
+
+  padding: 0 12px;     
+
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  color: #ddd;
+
+  border-radius: 6px;
+  font-size: 13px;
+
+  display: flex;          /* 🔥 key for centering */
+  align-items: center;    /* vertical center */
+  justify-content: center;/* horizontal center */
+
+  white-space: nowrap;    /* prevents breaking */
+  cursor: pointer;
+}
+
+.toolbar-butn:hover {
+  background: #3a3a3a;
+}
+
+.annotate-toolbar-right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;  
+  flex-shrink: 0;
+}
+
+.export-dataset-btn {
+  min-width: 150px;
+  padding: 0 18px;
+  height: 34px;
+
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  color: #ddd;
+
+  border-radius: 6px;
+  font-size: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.export-dataset-btn:hover {
+  background: #3a3a3a;
+}
+
+
+.image-grid {
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+    cursor: crosshair;
+
+}
+
+.image-grid * {
+  user-select: none;
+}
+
+.selection-rectangle {
+  position: absolute;
+  border: 1px dashed #6b8cff;
+  background: rgba(107, 140, 255, 0.15);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.image-grid.dragging .image-card {
+  pointer-events: none;  
+}
+
+body.dragging,
+body.dragging * {
+  cursor: crosshair !important;
+  user-select: none !important;
+}
+
+.selection-rectangle {
+  border: 1px solid #4da3ff;
+  background: rgba(77, 163, 255, 0.15);
+}
+
+
+.dataset-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.batch-card:hover .dataset-delete-btn {
+  opacity: 1;
+}

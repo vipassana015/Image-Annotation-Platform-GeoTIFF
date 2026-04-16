@@ -8,7 +8,7 @@
   justify-content: center;
   padding: 40px;
   /* background: subtle diagonal gradient */
-  background: linear-gradient(135deg, #0f1720 0%, #111827 40%, #0b1220 100%);
+  background: #333333;/*linear-gradient(135deg, #0f1720 0%, #111827 40%, #0b1220 100%);*/
   /* optional noise or subtle pattern: uncomment if you have an asset */
   /* background-image: url('/assets/noise.png'); opacity: 0.04; */
   box-sizing: border-box;
@@ -19,9 +19,9 @@
 /* Card */
 .newproject-card {
   width: 980px;
+  height: 500px;
   max-width: 96%;
   background: linear-gradient(180deg, rgba(28,28,28,0.96), rgba(22,22,22,0.96));
-  border: 1px solid rgba(255,255,255,0.04);
   box-shadow: 0 10px 40px rgba(2,6,23,0.6);
   padding: 28px;
   border-radius: 12px;
@@ -29,7 +29,8 @@
 
 /* Header */
 .np-title {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
+  text-align: center;
   font-size: 28px;
   color: #f3f7ff;
   font-weight: 600;
@@ -78,8 +79,11 @@
   font-size: 14px;
 }
 
+.np-select {
+  width: 50%;
+}
+
 .np-input:focus, .np-textarea:focus, .np-select:focus {
-  border-color: rgba(124,92,255,0.9);
   box-shadow: 0 0 0 4px rgba(124,92,255,0.06);
 }
 
@@ -159,13 +163,13 @@
 /* actions */
 .np-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 35px;
 }
 
 .np-btn-create {
-  background: linear-gradient(90deg,#7c5cff,#5b3ef4);
+  background: #78797b;
   color: white;
   border: none;
   padding: 10px 16px;
@@ -180,10 +184,82 @@
 }
 
 .np-btn-cancel {
-  background: transparent;
+  background:#78797b;
   border: 1px solid rgba(255,255,255,0.04);
   color: #d8e2ff;
   padding: 8px 14px;
   border-radius: 10px;
   cursor: pointer;
+}
+
+/* ===============================
+   SELECTION ACTION BAR
+================================ */
+
+.selection-bar {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 80%;
+  max-width: 1200px;
+
+  padding: 10px 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Left text */
+.selection-bar span {
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* Right actions */
+.selection-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.selection-actions button {
+  padding: 6px 12px;
+  font-size: 13px;
+
+  background: #2a2a2a;
+  color: white;
+
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+.selection-actions button:hover {
+  background: #3a3a3a;
+}
+
+/* Remove button highlight */
+.selection-actions button:first-child {
+  background: #2a2a2a;
+  color: white;
+}
+
+.selection-actions button:first-child:hover {
+  background: #444;
+}
+
+/* Clear button */
+.clear-btn {
+  background: transparent;
+  border: 1px solid #444;
 }

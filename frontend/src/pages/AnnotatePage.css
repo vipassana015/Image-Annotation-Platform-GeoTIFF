@@ -1,0 +1,559 @@
+/* =====================================================
+   ANNOTATE PAGE MAIN LAYOUT
+   ===================================================== */
+
+.annotate-main {
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+/* Wrapper that controls annotate page width */
+.annotate-content {
+  width: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 40px;
+  overflow-y: auto; 
+}
+
+/* Section that holds the batch list */
+.annotate-batch-section {
+  width: 80%;
+  min-height: 100%;
+  align-self: stretch;
+}
+
+/* =====================================================
+   BATCH LIST
+   ===================================================== */
+
+.batch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 10px;
+}
+
+/* =====================================================
+   BATCH CARD (HORIZONTAL LAYOUT)
+   ===================================================== */
+
+.batch-card {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;        
+  align-items: flex-start;
+  gap: 20px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+
+  padding: 16px 20px;
+  cursor: pointer;
+
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.batch-card:hover {
+  border-color: #3a3a3a;
+  background: #222222;
+}
+
+.batch-card.active {
+  border-color: #444;
+  background: #262626;
+}
+
+/* =====================================================
+   BATCH THUMBNAIL (LEFT COLUMN)
+   ===================================================== */
+
+
+.batch-thumb {
+  width: 120px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.thumb-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: #2a2a2a;
+  overflow: hidden;
+}
+
+.batch-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =====================================================
+   BATCH CONTENT (RIGHT COLUMN)
+   ===================================================== */
+
+.thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.batch-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Batch title */
+.batch-header strong {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Created date */
+.batch-meta {
+  font-size: 12px;
+  color: #888;
+}
+
+.batch-counts {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+  .batch-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;         
+  font-size: 12px;
+  color: #aaa;
+}
+
+
+
+/* =====================================================
+   ANNOTATOR ROW
+   ===================================================== */
+
+.batch-annotator-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.annotator-label {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* Compact dropdown-style selector */
+.annotator-select {
+  position: relative;
+  width: 220px;
+  height: 34px;
+
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.annotator-selected {
+  font-size: 13px;
+  color: #777;
+}
+
+.annotator-arrow {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Dropdown menu (empty for now, backend-driven later) */
+.annotator-options {
+  display: none;
+
+  position: absolute;
+  top: 38px;
+  left: 0;
+  width: 100%;
+
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 6px;
+
+  z-index: 10;
+}
+
+/* Temporary hover behavior */
+.annotator-select:hover .annotator-options {
+  display: block;
+}
+
+
+/* =====================================================
+   PROGRESS BAR
+   ===================================================== */
+
+
+.batch-progress {
+  height: 6px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 6px;
+  opacity: 0.6;
+}
+
+.batch-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6b8cff, #8fa7ff);
+  transition: width 0.3s ease;
+}
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.annotate-empty {
+  margin-top: 120px;
+  text-align: center;
+  color: #777;
+}
+
+.image-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.image-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border 0.18s ease;
+  border-radius: 8px;
+}
+
+.image-card:hover {
+  transform: translateY(-4px);
+}
+
+.image-card .thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: transparent;
+  border: 1px solid #1f1f1f;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  position: relative;
+
+  transition: border 0.18s ease, box-shadow 0.18s ease;
+}
+
+.image-card:hover .thumb {
+  border-color: #a0a5b9;
+  box-shadow: 0 0 0 1px rgba(107, 140, 255, 0.35);
+}
+
+
+.image-card .thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.filename {
+  font-size: 12px;
+  color: #cfcfcf;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===============================
+   BATCH HEADER BAR
+   =============================== */
+.batch-list-header {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+
+.batch-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 10px;
+}
+
+.back-link {
+  font-size: 13px;
+  color: #8b8b8b;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  transition: color 0.15s ease;
+}
+
+.back-link:hover {
+  color: #cfd6ff;
+}
+
+.batch-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;   /* lower than delete */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(20, 24, 45, 0.55);
+  color: #fff;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+
+.image-card:hover .thumb-overlay {
+  opacity: 1;
+}
+
+.annotate-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0 24px;
+  width: 100%;
+}
+
+.annotate-toolbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.annotate-toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Keep filters grouped */
+.annotate-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+/* Sort container */
+.sort-wrapper {
+  position: relative;
+}
+
+/* Match dashboard button style */
+.sort-by {
+  background: #78797b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Dropdown panel */
+.sort-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 160px;
+
+  left: 50%;                          /* center horizontally */
+  transform: translateX(-50%);    
+
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden;
+
+  z-index: 100;
+}
+
+/* Dropdown options */
+.sort-dropdown div {
+  padding: 10px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #ddd;
+}
+
+.sort-dropdown div:hover {
+  background: #2a2a2a;
+}
+
+.ui-button {
+  background: #78797b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.ui-button:hover {
+  background: #6f7072;
+}
+
+.ui-button.active {
+  background: #20253a;
+  border: 1px solid #6b8cff;
+}
+
+.batch-page-wrapper {
+  width: 100%;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+
+  z-index: 3;   /* 🔥 VERY IMPORTANT */
+
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: #fff;
+
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 6px;
+
+  cursor: pointer;
+  opacity: 0; 
+}
+
+.image-card:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  background: rgba(131, 124, 124, 0.8);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-actions button:last-child {
+  background: rgb(205, 171, 171);
+  color: white;
+}
+
+.thumb-overlay span {
+  pointer-events: auto;
+  cursor: pointer;
+} 
+
+.batch-card {
+  position: relative;
+}
+
+.batch-delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  z-index: 3;
+
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.batch-card:hover .batch-delete-btn {
+  opacity: 1;
+}

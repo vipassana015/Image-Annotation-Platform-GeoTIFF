@@ -7,8 +7,8 @@ import "./NewProjectPage.css";
 export default function NewProjectPage() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [collabInput, setCollabInput] = useState(""); // current text in collaborator input
-  const [collaborators, setCollaborators] = useState([]); // array of { email, role }
+  const [collaborators, setCollaborators] = useState([]); 
+  const [collabInput, setCollabInput] = useState(""); 
   const [visibility, setVisibility] = useState("private");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -17,76 +17,104 @@ export default function NewProjectPage() {
   const API = process.env.REACT_APP_API_BASE || "http://127.0.0.1:8000";
 
   const getHeaders = () => {
-    const token = localStorage.getItem("token");
-    const headers = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Token ${token}`;
-    return headers;
-  };
+  const token = localStorage.getItem("access_token"); // ✅ correct key
+  const headers = { "Content-Type": "application/json" };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; // ✅ correct scheme
+  }
+
+  return headers;
+};
+
 
   // Add collaborator from input (press Enter or click add)
-  const addCollaborator = () => {
-    const val = collabInput.trim();
-    if (!val) return;
-    // avoid duplicates
-    if (collaborators.some(c => c.email.toLowerCase() === val.toLowerCase())) {
-      setCollabInput("");
-      return;
-    }
-    // Default role: editor (you can change later per-collab in settings)
-    setCollaborators(prev => [...prev, { email: val, role: "editor" }]);
-    setCollabInput("");
-  };
+  const handleAddCollaborator = () => {
+  const value = collabInput.trim();
 
-  const removeCollaborator = (email) => {
-    setCollaborators(prev => prev.filter(c => c.email !== email));
-  };
+  if (!value) return;
+
+  // Prevent duplicates
+  if (collaborators.includes(value)) return;
+
+  setCollaborators([...collaborators, value]);
+  setCollabInput("");
+};
+
+  const handleRemoveCollaborator = (value) => {
+  setCollaborators(collaborators.filter((c) => c !== value));
+};;
 
   const handleCollabKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      addCollaborator();
+      handleAddCollaborator();
     } else if (e.key === "," ) {
       // allow comma-separated entry
       e.preventDefault();
-      addCollaborator();
+      handleAddCollaborator();
     }
   };
 
-  const submit = async (e) => {
-    e.preventDefault();
-    setErrorMsg("");
-    if (!name.trim()) {
-      setErrorMsg("Project name is required.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const payload = {
-        name: name.trim(),
-        description: desc.trim() || null,
-        visibility,
-        collaborators, // array of { email, role }
-      };
+const submit = async (e) => {
+  e.preventDefault();
+  setErrorMsg("");
 
-      const res = await axios.post(`${API}/api/projects/`, payload, { headers: getHeaders() });
-      const project = res.data;
-      // navigate to the project's page (adjust route if different)
-      navigate(`/projects/${project.id}`);
-    } catch (err) {
-      console.error("Create project error", err.response || err);
-      const msg = err.response?.data || err.message || "Unknown error";
-      // Try to display helpful message
-      setErrorMsg(typeof msg === "string" ? msg : JSON.stringify(msg));
-    } finally {
-      setLoading(false);
+  if (!name.trim()) {
+    setErrorMsg("Project name is required.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const payload = {
+      name: name.trim(),
+      description: desc.trim() || "",
+      visibility,
+    };
+
+    // 1️⃣ CREATE PROJECT
+    const res = await axios.post(
+      `${API}/api/projects/`,
+      payload,
+      { headers: getHeaders() }
+    );
+
+    const projectId = res.data.id;
+
+    // 2️⃣ ADD COLLABORATORS (NEW)
+    for (let collab of collaborators) {
+      try {
+        await axios.post(
+          `${API}/api/projects/${projectId}/members/add/`,
+          {
+            identifier: collab,
+            role: "annotator",
+          },
+          { headers: getHeaders() }
+        );
+      } catch (err) {
+        console.error(`Failed to add ${collab}`, err);
+      }
     }
-  };
+
+    // 3️⃣ NAVIGATE
+    navigate(`/projects/${projectId}/`);
+
+  } catch (error) {
+    console.error("Create project failed:", error);
+    setErrorMsg("Failed to create project. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="newproject-page">
       <div className="newproject-card">
         <h1 className="np-title">New Project</h1>
-        <p className="np-sub">Create a new annotation project — draw bounding boxes or polygons and label them.</p>
+        <p className="np-sub">Create a new annotation project</p>
 
         <form className="np-form" onSubmit={submit}>
 
@@ -121,14 +149,14 @@ export default function NewProjectPage() {
                 onChange={(e) => setCollabInput(e.target.value)}
                 onKeyDown={handleCollabKeyDown}
               />
-              <button type="button" className="np-small-btn" onClick={addCollaborator}>Add</button>
+             <button type="button" className="np-small-btn" onClick={handleAddCollaborator}>Add</button>
             </div>
 
             <div className="np-collab-chips">
               {collaborators.map((c) => (
-                <div className="np-chip" key={c.email}>
-                  <span className="np-chip-text">{c.email}</span>
-                  <button type="button" className="np-chip-x" onClick={() => removeCollaborator(c.email)}>✕</button>
+                <div className="np-chip" key={c}>
+                  <span className="np-chip-text">{c}</span>
+                  <button type="button" className="np-chip-x" onClick={() => handleRemoveCollaborator(c)}>✕</button>
                 </div>
               ))}
             </div>
