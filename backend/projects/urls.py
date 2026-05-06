@@ -36,4 +36,6 @@ urlpatterns += [
     path("notifications/read-all/", MarkAllNotificationsReadView.as_view()),
     path('images/<int:image_id>/delete/', DeleteImageView.as_view()),
     path('batches/<int:batch_id>/delete/', DeleteBatchView.as_view()),
+    path("projects/<int:project_id>/classes/",ClassListCreateView.as_view()),
+    path("classes/<int:class_id>/",ClassDetailView.as_view()),
 ]

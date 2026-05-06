@@ -252,9 +252,12 @@ useEffect(() => {
     <PackageSearch size={16} /> Export
     </div>
 
-                <div className="menu-item">
-                    <Tags size={16} /> Classes
-                </div>
+                <div
+  className={`menu-item ${activeTab === "classes" ? "active" : ""}`}
+  onClick={() => navigate(`/projects/${projectId}/classes`)}
+>
+  <Tags size={16} /> Classes
+</div>
 
                 <div
     className={`menu-item ${activeTab === "members" ? "active" : ""}`}

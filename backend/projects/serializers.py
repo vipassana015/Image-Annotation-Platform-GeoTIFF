@@ -97,6 +97,8 @@ class UploadedFileSerializer(serializers.ModelSerializer):
 
 class BatchSerializer(serializers.ModelSerializer):
     file_count = serializers.IntegerField(source="files.count", read_only=True)
+    annotated_count = serializers.SerializerMethodField()
+    unannotated_count = serializers.SerializerMethodField()
     thumbnail_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -105,10 +107,18 @@ class BatchSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "file_count",
+            "annotated_count",
+            "unannotated_count",
             "thumbnail_url",
             "created_at",
         ]
-    
+
+    def get_annotated_count(self, batch):
+        return batch.files.filter(is_annotated=True).count()
+
+    def get_unannotated_count(self, batch):
+        return batch.files.filter(is_annotated=False).count()
+
     def get_thumbnail_url(self, batch):
         first_file = batch.files.filter(
             thumbnail__isnull=False
@@ -118,20 +128,39 @@ class BatchSerializer(serializers.ModelSerializer):
             return first_file.thumbnail.url
 
         return None
-
+    
+    
 class ClassLabelSerializer(serializers.ModelSerializer):
+    usage_count = serializers.SerializerMethodField()
+
     class Meta:
         model = ClassLabel
-        fields = ["id", "project", "name", "color", "created_at"]
-        read_only_fields = ["id", "created_at"]
+        fields = [
+            "id",
+            "project",
+            "name",
+            "color",
+            "description",
+            "usage_count",
+            "created_at",
+        ]
+        read_only_fields = ["id", "created_at", "usage_count"]
+
+    def get_usage_count(self, obj):
+        return obj.annotations.count()
 
 class AnnotationSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source="class_label.name", read_only=True)
+    class_color = serializers.CharField(source="class_label.color", read_only=True)
+
     class Meta:
         model = Annotation
         fields = [
             "id",
             "uploaded_file",
             "class_label",
+            "class_name",
+            "class_color",
             "x",
             "y",
             "width",
@@ -139,7 +168,6 @@ class AnnotationSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
 
 class DatasetSerializer(serializers.ModelSerializer):
     class Meta:

@@ -185,6 +185,8 @@ class ClassLabel(models.Model):
         default="#9ca3af"
     )
 
+    description = models.TextField(blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

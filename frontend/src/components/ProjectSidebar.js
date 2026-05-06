@@ -75,8 +75,8 @@ function ProjectSidebar({ project, projectId, activeTab }) {
 </div>
 <div
   className={`menu-item ${activeTab === "classes" ? "active" : ""}`}
-  onClick={() => navigate(`/project/${projectId}/classes`, {
-    state: { projectName: project.name }
+  onClick={() => navigate(`/projects/${projectId}/classes`, {
+  state: { projectName: project.name }
   })}
 >
   <Tags size={16} /> Classes

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   HelpCircle,
   Image,
@@ -43,6 +43,8 @@ function AnnotatePage() {
   const [imageToDelete, setImageToDelete] = useState(null);
   const [batchToDelete, setBatchToDelete] = useState(null);
 
+  const location = useLocation();
+
   const selectedBatch = batches.find(
   b => String(b.id) === String(batchId));
 
@@ -57,6 +59,27 @@ function AnnotatePage() {
 
   const handleDeleteClick = (id) => {
   setImageToDelete(id);
+};
+
+const fetchBatches = async () => {
+  try {
+    setLoadingBatches(true);
+
+    const res = await axios.get(
+      `${API}/api/projects/${projectId}/batches/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+
+    setBatches(res.data);
+  } catch (err) {
+    console.error("Failed to load batches", err);
+  } finally {
+    setLoadingBatches(false);
+  }
 };
 
 const confirmDelete = async () => {
@@ -172,28 +195,9 @@ const BATCH_SORT_OPTIONS = [
   }, [projectId, API]);
 
   /* ---------------- Fetch Batches ---------------- */
-  useEffect(() => {
-    const fetchBatches = async () => {
-      try {
-        const res = await axios.get(
-          `${API}/api/projects/${projectId}/batches/`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-        setBatches(res.data);
-      } catch (err) {
-        console.error("Failed to load batches", err);
-      } finally {
-        setLoadingBatches(false);
-      }
-    };
-
-    fetchBatches();
-  }, [projectId, API]);
-
+useEffect(() => {
+  fetchBatches();
+}, [projectId, location.pathname]);
 
   /* ---------------- Fetch Images for Selected Batch ---------------- */
 useEffect(() => {
@@ -234,6 +238,11 @@ console.log("batchId:", batchId);
 console.log("imageId:", imageId);
 console.log("images:", images);
 console.log("selectedImage:", selectedImage);
+
+const annotatedCount = images.filter(i => i.is_annotated).length;
+const unannotatedCount = images.filter(i => !i.is_annotated).length;
+
+
   return (
     <ProjectSidebarLayout
       project={project}          // you may fetch this
@@ -322,11 +331,11 @@ console.log("selectedImage:", selectedImage);
                     <div className="batch-counts">
                       <span>{total} images</span>
                       <div className="batch-status">
-                        <span className="annotated-dot">●</span>
-                        {annotated} annotated
-                        <span className="unannotated-dot">○</span>
-                        {total - annotated} unannotated
-                      </div>
+  <span className="annotated-dot">●</span>
+  {batch.annotated_count} annotated
+  <span className="unannotated-dot">○</span>
+  {batch.unannotated_count} unannotated
+</div>
                     </div>
 
                     <div className="batch-progress">
@@ -367,18 +376,18 @@ console.log("selectedImage:", selectedImage);
       <div className="annotate-toolbar-left">
         <div className="annotate-tabs">
           <button
-            className={`ui-button ${filter === "unannotated" ? "active" : ""}`}
-            onClick={() => setFilter("unannotated")}
-          >
-            Unannotated {filteredImages.filter(i => !i.is_annotated).length}
-          </button>
+  className={`ui-button ${filter === "unannotated" ? "active" : ""}`}
+  onClick={() => setFilter("unannotated")}
+>
+  Unannotated {unannotatedCount}
+</button>
 
-          <button
-            className={`ui-button ${filter === "annotated" ? "active" : ""}`}
-            onClick={() => setFilter("annotated")}
-          >
-            Annotated {filteredImages.filter(i => i.is_annotated).length}
-          </button>
+<button
+  className={`ui-button ${filter === "annotated" ? "active" : ""}`}
+  onClick={() => setFilter("annotated")}
+>
+  Annotated {annotatedCount}
+</button>
         </div>
       </div>
 

@@ -15,8 +15,8 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.decorators import api_view
 
-from .models import Project, UploadedFile, Batch, Dataset, DatasetImage, ProjectMembership, RecentProjectView, Activity, Notification
-from .serializers import ProjectSerializer, UploadedFileSerializer, BatchSerializer, DatasetSerializer, DatasetImageSerializer,ProjectMembershipSerializer, ActivitySerializer, NotificationSerializer
+from .models import Project, UploadedFile, Batch, Dataset, DatasetImage, ProjectMembership, RecentProjectView, Activity, Notification, ClassLabel
+from .serializers import ProjectSerializer, UploadedFileSerializer, BatchSerializer, DatasetSerializer, DatasetImageSerializer,ProjectMembershipSerializer, ActivitySerializer, NotificationSerializer, ClassLabelSerializer
  
 from projects.utils.thumbnails import generate_thumbnail
 from asgiref.sync import async_to_sync
@@ -790,3 +790,78 @@ class DeleteProjectView(APIView):
                 os.remove(path)
 
         return Response({"message": "Project deleted"})
+    
+class ClassListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, project_id):
+        project = get_object_or_404(Project, id=project_id)
+
+        if not has_project_access(request.user, project):
+            return Response(status=403)
+
+        classes = ClassLabel.objects.filter(project=project).order_by("id")
+        serializer = ClassLabelSerializer(classes, many=True)
+
+        return Response(serializer.data)
+
+    def post(self, request, project_id):
+        project = get_object_or_404(Project, id=project_id)
+
+        if not is_owner_or_admin(request.user, project):
+            return Response({"detail": "Not allowed"}, status=403)
+
+        data = request.data.copy()
+        data["project"] = project.id
+
+        serializer = ClassLabelSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            Activity.objects.create(
+                user=request.user,
+                project=project,
+                action="class_created",
+                message=f"Created class '{data.get('name')}'"
+            )
+
+            return Response(serializer.data, status=201)
+
+        return Response(serializer.errors, status=400)
+    
+class ClassDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, class_id):
+        class_obj = get_object_or_404(ClassLabel, id=class_id)
+        project = class_obj.project
+
+        if not is_owner_or_admin(request.user, project):
+            return Response({"detail": "Not allowed"}, status=403)
+
+        serializer = ClassLabelSerializer(class_obj, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, class_id):
+        class_obj = get_object_or_404(ClassLabel, id=class_id)
+        project = class_obj.project
+
+        if not is_owner_or_admin(request.user, project):
+            return Response({"detail": "Not allowed"}, status=403)
+
+        # Prevent delete if used
+        if class_obj.annotations.exists():
+            return Response(
+                {"detail": "Class is used in annotations. Cannot delete."},
+                status=400
+            )
+
+        class_obj.delete()
+
+        return Response({"message": "Class deleted"})

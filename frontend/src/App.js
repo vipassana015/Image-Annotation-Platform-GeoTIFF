@@ -13,6 +13,7 @@ import DatasetsPage from "./pages/DatasetsPage";
 import DatasetDetailPage from "./pages/DatasetDetailPage";
 import MembersPage from "./pages/MembersPage";
 import ExportPage from "./pages/ExportPage";
+import ClassesPage from "./pages/ClassesPage"; 
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/projects/:projectId/datasets/:datasetId" element={<DatasetDetailPage />}/>
         <Route path="/projects/:projectId/members" element={<MembersPage />} />
         <Route path="/projects/:projectId/export" element={<ExportPage />} />
+        <Route path="/projects/:projectId/classes" element={<ClassesPage />} />
       </Routes>
     </Router>
   );
