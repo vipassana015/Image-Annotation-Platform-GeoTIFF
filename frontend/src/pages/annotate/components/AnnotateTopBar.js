@@ -6,7 +6,8 @@ imageName,
   total,
   onPrev,
   onNext,
-   onAddToDataset
+   onAddToDataset,
+   onGoToDataset
 }) {
   return (
     <div className="annotate-topbar">
@@ -43,6 +44,13 @@ imageName,
   onClick={onAddToDataset}
 >
   Add to Dataset
+</button>
+
+<button
+  className="dataset-btn"
+  onClick={onGoToDataset}
+>
+  Go to Dataset
 </button>
   </div>
 

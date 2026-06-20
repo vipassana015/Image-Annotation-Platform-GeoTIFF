@@ -46,7 +46,7 @@ export default function ImageAnnotatePage() {
 
 
   const [isDatasetModalOpen, setIsDatasetModalOpen] = useState(false);
-  
+  const [toast, setToast] = useState(null);
 
   const currentIndex = images.findIndex(
   (img) => String(img.id) === String(imageId));
@@ -510,6 +510,7 @@ console.log("IMAGE:", imageId);
       onPrev={goPrev}
       onNext={goNext}
       onAddToDataset={() => setIsDatasetModalOpen(true)}
+      onGoToDataset={() => navigate(`/projects/${projectId}/datasets`)}
     />
 
     {/* BODY */}
@@ -535,19 +536,22 @@ console.log("IMAGE:", imageId);
       />
     </div>
 
-    {/* ✅ MODAL (ALWAYS INSIDE ROOT) */}
+    {/* MODAL (ALWAYS INSIDE ROOT) */}
     {isDatasetModalOpen && (
       <div className="dataset-modal-overlay">
         <div className="dataset-modal">
 
           <div className="dataset-modal-header">
             Add to Dataset
-            <button onClick={() => setIsDatasetModalOpen(false)}>✕</button>
+            <button
+  className="dataset-modal-close"
+  onClick={() => setIsDatasetModalOpen(false)}
+>
+  ×
+</button>
           </div>
 
           <div className="dataset-modal-body">
-
-            <label>Select Dataset</label>
 
 <ClassDropdown
   value={selectedDataset}
@@ -582,7 +586,10 @@ console.log("IMAGE:", imageId);
             <button
   onClick={async () => {
     if (!selectedDataset) {
-      alert("Please select a dataset");
+      setToast({
+  type: "warning",
+  message: "Please select a dataset"
+});
       return;
     }
 
@@ -592,15 +599,24 @@ console.log("IMAGE:", imageId);
     uploaded_file: imageId
   });
 
-  alert("Image added to dataset");
+ setToast({
+  type: "success",
+  message: "Image added to dataset"
+});
   setIsDatasetModalOpen(false);
 
 } catch (err) {
   if (err.response?.status === 400) {
-    alert("Image already exists in dataset ⚠️");
+    setToast({
+  type: "error",
+  message: "Image already exists in dataset"
+});
   } else {
     console.error(err);
-    alert("Error adding image");
+    setToast({
+  type: "error",
+  message: "Error adding image"
+});
   }
 }
   }}
@@ -612,6 +628,56 @@ console.log("IMAGE:", imageId);
         </div>
       </div>
     )}
+
+{toast && (
+  <div className="custom-alert-overlay">
+    <div className={`custom-alert ${toast.type}`}>
+
+      <div className="custom-alert-message">
+        {toast.message}
+      </div>
+
+     <div className="custom-alert-footer">
+
+  {(toast.type === "success" ||
+    toast.message.includes("already exists")) && (
+    <button
+  className="custom-alert-action"
+  onClick={() => {
+    const datasetObj = datasets.find(
+      d =>
+        String(d.id) ===
+        String(selectedDataset?.id || selectedDataset)
+    );
+
+    if (!datasetObj) return;
+
+    navigate(
+      `/projects/${projectId}/datasets/${datasetObj.id}`,
+      {
+        state: {
+          datasetName: datasetObj.name
+        }
+      }
+    );
+  }}
+>
+  Go to Dataset
+</button>
+  )}
+
+  <button
+    className="custom-alert-close"
+    onClick={() => setToast(null)}
+  >
+    Close
+  </button>
+
+</div>
+
+    </div>
+  </div>
+)}
 
   </div>
 );

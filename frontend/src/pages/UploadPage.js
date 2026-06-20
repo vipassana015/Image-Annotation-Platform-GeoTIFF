@@ -19,6 +19,7 @@ import {
 import "../pages/Dashboard.css";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import ProjectSidebarLayout from "../components/ProjectSidebarLayout";
 import ClassDropdown from "./annotate/components/ClassDropdown";
 
 function UploadPage() {
@@ -198,151 +199,13 @@ setUploadedFiles(data.files);
 
 
   return (
-    <div className="upload-container">
-      {/* Sidebar */}
-      <div className="sidebar upload-sidebar">
-        <div className="sidebar-columns">
-          {/* LEFT COLUMN — Collapsed icon bar */}
-          <div className="sidebar-icons">
-            <div className="icon-stack">
-              {/* User Circle */}
-              <div
-                className={`user-initial-circle small ${
-                  activeIcon === "user" ? "active" : ""
-                }`}
-                onClick={() => setActiveIcon("user")}
-                title="User"
-              >
-                U
-              </div>
-
-              {/* Projects */}
-              <div
-                className={`icon-btn ${activeIcon === "projects" ? "active" : ""}`}
-                onClick={() => setActiveIcon("projects")}
-                title="Projects"
-              >
-                <FolderKanban size={18} />
-              </div>
-
-              {/* Admin View */}
-              <div
-                className={`icon-btn ${activeIcon === "admin" ? "active" : ""}`}
-                onClick={() => setActiveIcon("admin")}
-                title="Admin View"
-              >
-                <LayoutDashboard size={18} />
-              </div>
-
-              {/* Notifications */}
-              <div
-                className={`icon-btn ${activeIcon === "notifications" ? "active" : ""}`}
-                onClick={() => setActiveIcon("notifications")}
-                title="Notifications"
-              >
-                <Bell size={18} />
-              </div>
-
-              {/* Team Projects */}
-              <div
-                className={`icon-btn ${activeIcon === "team" ? "active" : ""}`}
-                onClick={() => setActiveIcon("team")}
-                title="Team Projects"
-              >
-                <Users size={18} />
-              </div>
-
-              {/* Trash */}
-              <div
-                className={`icon-btn ${activeIcon === "trash" ? "active" : ""}`}
-                onClick={() => setActiveIcon("trash")}
-                title="Trash"
-              >
-                <Trash2 size={18} />
-              </div>
-
-              {/* Help / Support */}
-              <div
-                className={`icon-btn ${activeIcon === "help" ? "active" : ""}`}
-                onClick={() => setActiveIcon("help")}
-                title="Help / Support"
-              >
-                <HelpCircle size={18} />
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN — Detailed sidebar */}
-          <div className="sidebar-content">
-            {/* Back Button */}
-            <div
-              className="back-btn"
-              onClick={() => (window.location.href = "/dashboard")}
-              role="button"
-              aria-label="Back to dashboard"
-            >
-              <ArrowLeft size={16} />
-            </div>
-
-            {/* Project Thumbnail Section */}
-            <div className="project-preview">
-              <div className="thumbnail-box">
-                <img
-  src={
-    project?.thumbnail_url
-      ? `${API}${project.thumbnail_url}`
-      : "https://via.placeholder.com/600x360"
-  }
-  alt={project?.name || "Project"}
-  className="project-thumbnail"
-/>
-              </div>
-             <p className="project-name">{project?.name}</p>
-            </div>
-
-            {/* Data Lab Tabs */}
-            <div className="menu-top">
-              <div
-  className="menu-item active"
-  onClick={() => navigate(`/projects/${projectId}/upload`)}
->
-                <FileUp size={16} /> Upload Data
-              </div>
-
-<div
-  className="menu-item"
-  onClick={() => navigate(`/projects/${projectId}/annotate`)}
->
-                <Image size={16} /> Annotate
-                </div>
-
-              <div
-               className="menu-item"
-onClick={() => navigate(`/projects/${projectId}/datasets`)}
-              >
-                <Layers size={16} /> Datasets
-              </div>
-
-              <div
-                className="menu-item"
-onClick={() => navigate(`/projects/${projectId}/export`)}
-              >
-                <PackageSearch size={16} /> Export
-              </div>
-
-              <div
-               className="menu-item"
-onClick={() => navigate(`/projects/${projectId}/classes`)}
-              >
-                <Tags size={16} /> Classes
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <ProjectSidebarLayout
+    project={project}
+    projectId={projectId}
+  >
+    
 
       {/* Main Upload Area */}
-      <div className="upload-main">
         {/* Left-aligned breadcrumb/header */}
         <div className="upload-header-left">
           <div className="breadcrumb-row">
@@ -477,7 +340,7 @@ onClick={() => navigate(`/projects/${projectId}/classes`)}
 
 
           </div>
-        )}
+
 
 {uploadError && (
   <p style={{ color: "red", marginTop: "10px" }}>
@@ -486,8 +349,7 @@ onClick={() => navigate(`/projects/${projectId}/classes`)}
 )}
 
 
-      </div>
-    </div>
+      </ProjectSidebarLayout>
   );
 }
 

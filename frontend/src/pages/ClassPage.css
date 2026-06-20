@@ -1,43 +1,48 @@
+.breadcrumb-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #eaeaea;
+  font-weight: 600;
+  font-size: 20px;
+
+  margin-bottom: 24px;
+}
+
+.project-name-bc {
+  color: #fff;
+  font-weight: 700;
+}
+
+.bc-sep {
+  color: #9aa0a6;
+  font-weight: 600;
+}
+
+.current-tab {
+  color: #9aa0a6;
+  font-weight: 600;
+}
+
 .classes-header-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
-
-/* MATCH ANNOTATE STYLE */
-.breadcrumb {
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.project-title {
-  color: #fff;
-}
-
-.breadcrumb-separator {
-  color: #666;
-}
-
-.page-name {
-  color: #aaa;
-}
-
 
 .classes-container {
   width: 100%;
-}
-
-.classes-header {
-  margin-bottom: 20px;
+  padding-top: 8px;
 }
 
 .classes-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  margin-top: 24px;
 }
 
 .class-card {
@@ -61,6 +66,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
+  min-width: 0;
 }
 
 .class-color {
@@ -80,10 +87,7 @@
   color: #aaa;
 }
 
-.class-usage {
-  font-size: 13px;
-  color: #888;
-}
+
 
 .empty-state {
   text-align: center;
@@ -108,17 +112,88 @@
   background: #4a5075;
 }
 
-.section-title {
-  font-size: 20px;
-  font-weight: 600;
+.create-class-btn {
+  height: 36px;
+  padding: 0 16px;
+
+  background: #78797b;
+  border: 1px solid #4a5075;
+  border-radius: 8px;
+
   color: #fff;
-  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.separator {
-  color: #666;
+.create-class-btn:hover {
+  background: #4a5075;
 }
 
-.page-name {
-  color: #aaa;
+.class-right-section {
+  flex-shrink: 0;
+}
+
+.class-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.class-usage {
+  font-size: 13px;
+  color: #888;
+  margin-right: 10px;
+}
+
+.rename-btn,
+.delete-btn {
+  height: 32px;
+  min-width: 72px;
+
+  padding: 0 14px;
+
+  border-radius: 6px;
+  border: none;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Rename */
+.rename-btn {
+  background: #1f1f1f;
+  color: #ddd;
+}
+
+.rename-btn:hover {
+  background: #2d2d2d;
+}
+
+.class-delete-btn {
+  height: 32px;
+  min-width: 72px;
+
+  padding: 0 14px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #1f1f1f;
+   color: #ddd;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.class-delete-btn:hover {
+   background: #2d2d2d;
 }

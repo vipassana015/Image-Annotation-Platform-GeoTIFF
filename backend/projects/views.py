@@ -16,13 +16,50 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.decorators import api_view
 
 from .models import Project, UploadedFile, Batch, Dataset, DatasetImage, ProjectMembership, RecentProjectView, Activity, Notification, ClassLabel
-from .serializers import ProjectSerializer, UploadedFileSerializer, BatchSerializer, DatasetSerializer, DatasetImageSerializer,ProjectMembershipSerializer, ActivitySerializer, NotificationSerializer, ClassLabelSerializer
+from .serializers import ProjectSerializer, UploadedFileSerializer, BatchSerializer, DatasetSerializer, DatasetImageSerializer,ProjectMembershipSerializer, ActivitySerializer, NotificationSerializer, ClassLabelSerializer, UserSerializer
  
 from projects.utils.thumbnails import generate_thumbnail
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from .export.services.export_service import ExportService
+
+
+# Signup
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+# Login
+from rest_framework.views import APIView
+
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                "message": "Login successful",
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+                "user_id": user.id
+            })
+
+        return Response(
+            {"error": "Invalid credentials"},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
 
 
 def has_project_access(user, project):

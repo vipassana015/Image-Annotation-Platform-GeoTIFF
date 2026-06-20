@@ -72,9 +72,9 @@ const handleCreateClass = async () => {
 
   return (
     <div
-      className="class-dropdown"
-      ref={containerRef}
-    >
+  className={`class-dropdown ${isOpen ? "open" : ""}`}
+  ref={containerRef}
+>
       <button
         className="dropdown-trigger"
         onClick={() => setIsOpen(!isOpen)}

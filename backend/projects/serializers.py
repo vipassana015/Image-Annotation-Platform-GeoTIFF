@@ -7,6 +7,28 @@ from .models import Dataset, DatasetImage
 from django.contrib.auth.models import User
 import os
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def validate_email(self, value):
+        if not value:
+            raise serializers.ValidationError("Email is required.")
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with that email already exists.")
+        return value
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            password=validated_data['password']
+        )
+        return user
+
 class ProjectSerializer(serializers.ModelSerializer):
     thumbnail_url = serializers.SerializerMethodField()
     members = serializers.SerializerMethodField()
@@ -169,20 +191,11 @@ class AnnotationSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-class DatasetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Dataset
-        fields = ['id', 'name', 'project', 'created_at']
-
 
 class DatasetImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = DatasetImage
         fields = ['id', 'dataset', 'uploaded_file', 'added_at']
-
-from rest_framework import serializers
-from .models import Dataset, DatasetImage
-
 
 class DatasetSerializer(serializers.ModelSerializer):
     image_count = serializers.SerializerMethodField()

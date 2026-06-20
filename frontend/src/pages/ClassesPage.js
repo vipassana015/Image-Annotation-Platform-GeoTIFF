@@ -88,16 +88,70 @@ const [newClass, setNewClass] = useState({
   }
 };
 
+const handleDelete = async (classId) => {
+  try {
+   await axios.delete(
+  `http://127.0.0.1:8000/api/projects/${projectId}/classes/${classId}/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    fetchClasses();
+
+  } catch (err) {
+    console.error(err.response?.data || err);
+  }
+};
+
+const handleRename = async (classObj) => {
+  const newName = prompt("Enter new class name", classObj.name);
+
+  if (!newName || newName.trim() === "") return;
+
+  try {
+    await axios.patch(
+  `http://127.0.0.1:8000/api/projects/${projectId}/classes/${classObj.id}/`,
+      {
+        name: newName,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    fetchClasses();
+
+  } catch (err) {
+    console.error(err.response?.data || err);
+  }
+};
+
   return (
   <ProjectSidebarLayout project={project} projectId={projectId}>
-    <div className="classes-container">
-<div className="section-title">
-  <span className="project-title">{project?.name}</span>
-  <span className="separator"> &gt; </span>
-  <span className="page-name">Classes</span>
+
+  <div className="classes-container">
+
+   <div className="breadcrumb-row">
+  <span className="project-name-bc">{project?.name}</span>
+  <span className="bc-sep">›</span>
+  <span className="current-tab">Classes</span>
 </div>
 
-      {classes.length === 0 ? (
+<div className="classes-header-row">
+  <button
+    className="create-class-btn"
+    onClick={() => setShowModal(true)}
+  >
+    + Create Class
+  </button>
+</div>
+
+    {classes.length === 0 ? (
         <div className="empty-state">No classes created</div>
       ) : (
         <div className="classes-list">
@@ -117,9 +171,29 @@ const [newClass, setNewClass] = useState({
                 </div>
               </div>
 
-              <div className="class-usage">
-                {cls.usage_count} annotations
-              </div>
+             <div className="class-right-section">
+
+  <div className="class-actions">
+
+<span className="class-usage">
+  {(cls.usage_count || 0)} annotations
+</span>
+    <button
+      className="rename-btn"
+      onClick={() => handleRename(cls)}
+    >
+      Rename
+    </button>
+
+    <button
+      className="class-delete-btn"
+      onClick={() => handleDelete(cls.id)}
+    >
+      Delete
+    </button>
+  </div>
+
+</div>
 
             </div>
           ))}
@@ -127,6 +201,7 @@ const [newClass, setNewClass] = useState({
       )}
 
     </div>
+
 
     {showModal && (
   <div className="modal-overlay">

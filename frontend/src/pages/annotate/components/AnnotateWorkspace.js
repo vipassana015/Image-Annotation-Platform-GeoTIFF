@@ -715,12 +715,12 @@ onDragEnd={(e) => {
   };
 }}
                         stroke={
-                          box.id === selectedBoxId
-                            ? "#ffffff"
-                            : box.id === hoveredBoxId
-                            ? "#facc15"
-                            : boxClass?.color || "#8d0c0cff"
-                        }
+  box.id === selectedBoxId
+    ? "#39ff14"
+    : box.id === hoveredBoxId
+    ? "#facc15"
+    : "#39ff14"
+}
                         strokeWidth={
                           box.id === selectedBoxId
                             ? 2
@@ -834,9 +834,11 @@ onDragEnd={(e) => {
             {selectedBoxId && !isLocked && (
               <Transformer
                 ref={transformerRef}
-                rotateEnabled={false}
-                anchorSize={6}
-                borderStroke="#3b82f6"
+  rotateEnabled={false}
+  anchorSize={6}
+  borderStroke="#00ff00"
+  anchorStroke="#00ff00"
+  anchorFill="#00ff00"
               />
             )}
           </Layer>

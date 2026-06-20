@@ -60,7 +60,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: #78797b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,7 +86,7 @@
 }
 
 .role-owner {
-  background: #3b82f6;
+  background: #78797b;
 }
 
 .role-annotator {
@@ -104,14 +104,14 @@
   padding: 6px 12px;
   border-radius: 6px;
   background: rgba(255, 80, 80, 0.1);
-  color: #ff6b6b;
+  background: #5a5959;
   cursor: pointer;
   font-size: 13px;
   transition: all 0.15s ease;
 }
 
 .remove-btn:hover {
-  background: rgba(255, 80, 80, 0.2);
+  background: #929090;
 }
 
 .remove-btn:active {
