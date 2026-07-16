@@ -66,7 +66,7 @@ Stored in Database & Exported
 
 ---
 
-![Coordinate Conversion](assets/Output%203.png)
+![Coordinate Conversion](assets/coordinate-conversion.png)
 
 ---
 
