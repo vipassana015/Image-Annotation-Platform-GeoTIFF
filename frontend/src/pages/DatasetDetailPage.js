@@ -287,9 +287,9 @@ const selectImagesInBox = (box) => {
 
         <button
   className="toolbar-butn"
-  onMouseDown={(e) => e.stopPropagation()}   // 🔥 VERY IMPORTANT
+  onMouseDown={(e) => e.stopPropagation()}   
   onClick={(e) => {
-    e.stopPropagation();                     // 🔥 ALSO IMPORTANT
+    e.stopPropagation();        
     bulkRemoveImages();
   }}
 >

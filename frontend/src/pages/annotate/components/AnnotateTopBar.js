@@ -4,10 +4,11 @@ export default function AnnotateTopBar({
 imageName,
   currentIndex,
   total,
+  annotationCount,
   onPrev,
   onNext,
-   onAddToDataset,
-   onGoToDataset
+  onAddToDataset,
+  onGoToDataset
 }) {
   return (
     <div className="annotate-topbar">
@@ -30,6 +31,10 @@ imageName,
     <span className="image-count">
       {currentIndex + 1} / {total}
     </span>
+
+    <span className="annotation-count">
+  Annotations: {annotationCount}
+</span>
 
     <button
       className="nav-btn"

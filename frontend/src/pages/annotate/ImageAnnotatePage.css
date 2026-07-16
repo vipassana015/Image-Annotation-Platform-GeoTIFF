@@ -88,6 +88,13 @@
   gap: 12px;
 }
 
+.annotation-count {
+  margin-left: 12px;
+  font-size: 13px;
+  color: #d1d5db;
+  font-weight: 500;
+}
+
 /* FIX BUTTON JUMPING */
 .nav-btn {
   width: 28px;     

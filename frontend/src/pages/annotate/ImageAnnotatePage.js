@@ -27,6 +27,7 @@ export default function ImageAnnotatePage() {
   const [redoStack, setRedoStack] = useState([]);
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [datasets, setDatasets] = useState([]);
+  const [imageMetadata, setImageMetadata] = useState(null);
 
 
   useEffect(() => {
@@ -126,15 +127,23 @@ useEffect(() => {
     try {
       const response = await api.get(`/api/uploaded-files/${imageId}/`);
 
+      setImageMetadata({
+  width: response.data.width,
+  height: response.data.height,
+  crs: response.data.crs,
+  bbox: response.data.bbox,
+});
+
       console.log("RAW FILE FIELD:", response.data.file);
 
-      const filePath = response.data.file;
+      const previewPath =
+  response.data.thumbnail_url || response.data.file;
 
-      if (filePath.startsWith("http")) {
-        setImageUrl(filePath);
-      } else {
-        setImageUrl(`http://127.0.0.1:8000${filePath}`);
-      }
+if (previewPath.startsWith("http")) {
+  setImageUrl(previewPath);
+} else {
+  setImageUrl(`http://127.0.0.1:8000${previewPath}`);
+}
 
     } catch (err) {
       console.error("IMAGE FETCH ERROR:", err);
@@ -507,6 +516,7 @@ console.log("IMAGE:", imageId);
       imageName={currentImage?.filename}
       currentIndex={currentIndex}
       total={images.length}
+      annotationCount={boxes.length}
       onPrev={goPrev}
       onNext={goNext}
       onAddToDataset={() => setIsDatasetModalOpen(true)}
@@ -518,6 +528,7 @@ console.log("IMAGE:", imageId);
       <AnnotateWorkspace
         imageUrl={imageUrl}
         imageId={imageId}
+        imageMetadata={imageMetadata}
         boxes={boxes}
         setBoxes={setBoxes}
         selectedBoxId={selectedBoxId}

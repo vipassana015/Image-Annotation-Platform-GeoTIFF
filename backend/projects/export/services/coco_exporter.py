@@ -1,6 +1,8 @@
 import os
 import json
 import shutil
+import csv
+
 
 class COCOExporter:
 
@@ -9,8 +11,15 @@ class COCOExporter:
         self.files = files
         self.annotations = annotations
 
-        self.base_path = os.path.join("temp_exports", f"dataset_{dataset.id}_coco")
-        self.images_path = os.path.join(self.base_path, "images")
+        self.base_path = os.path.join(
+            "temp_exports",
+            f"dataset_{dataset.id}_coco"
+        )
+
+        self.images_path = os.path.join(
+            self.base_path,
+            "images"
+        )
 
     def setup_dirs(self):
         os.makedirs(self.images_path, exist_ok=True)
@@ -18,7 +27,11 @@ class COCOExporter:
     def copy_images(self):
         for file in self.files:
             src = file["path"]
-            dst = os.path.join(self.images_path, file["name"])
+            dst = os.path.join(
+                self.images_path,
+                file["name"]
+            )
+
             shutil.copy(src, dst)
 
     def build_categories(self):
@@ -33,10 +46,12 @@ class COCOExporter:
 
                 if label not in class_map:
                     class_map[label] = current_id
+
                     categories.append({
                         "id": current_id,
                         "name": label
                     })
+
                     current_id += 1
 
         return categories, class_map
@@ -59,6 +74,7 @@ class COCOExporter:
         ann_id = 1
 
         for ann in self.annotations:
+
             if not ann.class_label:
                 continue
 
@@ -69,12 +85,14 @@ class COCOExporter:
                 "id": ann_id,
                 "image_id": ann.uploaded_file.id,
                 "category_id": category_id,
+
                 "bbox": [
                     ann.x,
                     ann.y,
                     ann.width,
                     ann.height
                 ],
+
                 "area": ann.width * ann.height,
                 "iscrowd": 0
             })
@@ -83,13 +101,49 @@ class COCOExporter:
 
         return annotations_list
 
+    def create_geographic_csv(self):
+
+        csv_path = os.path.join(
+            self.base_path,
+            "geographic_coordinates.csv"
+        )
+
+        with open(csv_path, "w", newline="") as csvfile:
+
+            writer = csv.writer(csvfile)
+
+            writer.writerow([
+                "annotation_id",
+                "class_name",
+                "utm_x",
+                "utm_y",
+                "latitude",
+                "longitude"
+            ])
+
+            for ann in self.annotations:
+
+                writer.writerow([
+                    ann.id,
+                    ann.class_label.name if ann.class_label else "unknown",
+                    ann.utm_x,
+                    ann.utm_y,
+                    ann.latitude,
+                    ann.longitude
+                ])
+
     def generate(self):
+
         self.setup_dirs()
         self.copy_images()
 
         categories, class_map = self.build_categories()
+
         images = self.build_images()
-        annotations = self.build_annotations(class_map)
+
+        annotations = self.build_annotations(
+            class_map
+        )
 
         coco_data = {
             "images": images,
@@ -97,9 +151,18 @@ class COCOExporter:
             "categories": categories
         }
 
-        json_path = os.path.join(self.base_path, "annotations.json")
+        json_path = os.path.join(
+            self.base_path,
+            "annotations.json"
+        )
 
         with open(json_path, "w") as f:
-            json.dump(coco_data, f, indent=4)
+            json.dump(
+                coco_data,
+                f,
+                indent=4
+            )
+
+        self.create_geographic_csv()
 
         return self.base_path

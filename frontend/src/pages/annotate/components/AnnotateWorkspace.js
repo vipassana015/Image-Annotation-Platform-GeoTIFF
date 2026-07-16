@@ -6,6 +6,7 @@ import {
   Rect,
   Transformer,
   Text,
+  Line,
 } from "react-konva";
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as GeoTIFF from "geotiff"; 
@@ -34,6 +35,7 @@ export default function AnnotateWorkspace({
   redo,
   undoStack,
   redoStack,
+  imageMetadata
 }) {
 
   
@@ -61,6 +63,7 @@ const containerRef = useRef(null);
   const [selectedBoxPosition, setSelectedBoxPosition] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState(null);
 
 const fitToScreen = useCallback(() => {
   if (!imageObj) return;
@@ -206,30 +209,36 @@ useEffect(() => {
  /* ---------------- Resize  ---------------- */
 
 useEffect(() => {
-  if (!containerRef.current) return;
-
   const updateSize = () => {
+    if (!containerRef.current) return;
+
     const rect = containerRef.current.getBoundingClientRect();
 
     console.log("CONTAINER SIZE:", rect.width, rect.height);
 
     if (rect.width > 0 && rect.height > 0) {
-  setStageSize({
-    width: rect.width,
-    height: rect.height,
-  });
+      setStageSize({
+        width: rect.width,
+        height: rect.height,
+      });
 
-  setIsStageReady(true); // 👈 ADD THIS
-}
+      setIsStageReady(true);
+    }
   };
 
   updateSize();
 
   const observer = new ResizeObserver(updateSize);
-  observer.observe(containerRef.current);
 
-  return () => observer.disconnect();
-}, []);
+  if (containerRef.current) {
+    observer.observe(containerRef.current);
+  }
+
+  return () => {
+    observer.disconnect();
+  };
+
+}, []); 
 
   /* ---------------- Image Loading ---------------- */
 useEffect(() => {
@@ -451,26 +460,29 @@ if (
 
 
   const handleMouseMove = (e) => {
-    if (isLocked) return;
-    if (activeTool === TOOLS.PAN) return;
+  if (isLocked) return;
+  if (activeTool === TOOLS.PAN) return;
 
-    if (!drawingBox) return;
+  const pos = getPointerPosition();
+  if (!pos) return;
 
-    const pos = getPointerPosition();
-    if (!pos) return;
+  // Always track mouse
+  setMousePos(pos);
 
-    const maxX = imageObj.width;
-const maxY = imageObj.height;
+  if (!drawingBox) return;
 
-const clampedX = Math.max(0, Math.min(pos.x, maxX));
-const clampedY = Math.max(0, Math.min(pos.y, maxY));
+  const maxX = imageObj.width;
+  const maxY = imageObj.height;
 
-setDrawingBox({
-  ...drawingBox,
-  width: clampedX - drawingBox.x,
-  height: clampedY - drawingBox.y,
-});
-  };
+  const clampedX = Math.max(0, Math.min(pos.x, maxX));
+  const clampedY = Math.max(0, Math.min(pos.y, maxY));
+
+  setDrawingBox({
+    ...drawingBox,
+    width: clampedX - drawingBox.x,
+    height: clampedY - drawingBox.y,
+  });
+};
 
   const handleMouseUp = () => {
     if (isLocked) return;
@@ -558,35 +570,41 @@ setDrawingBox(null);
 
  const selectedBox = (boxes || []).find((b) => b.id === selectedBoxId);
 
+ console.log("SELECTED BOX", selectedBox);
+
   let popupPosition = null;
 
 if (selectedBox && selectedBoxPosition) {
-  const popupWidth = 260;
-  const popupHeight = 140;
-  const GAP = 12;
+ const popupWidth = 260;
+const popupHeight = 290;
+const GAP = 16;
 
-  let x =
-    selectedBoxPosition.screenX +
-    selectedBoxPosition.width / 2 -
-    popupWidth / 2;
+let x =
+  selectedBoxPosition.screenX +
+  selectedBoxPosition.width +
+  GAP;
 
-  let y =
-    selectedBoxPosition.screenY -
-    popupHeight -
+let y = selectedBoxPosition.screenY;
+
+if (x + popupWidth > window.innerWidth - 20) {
+  x =
+    selectedBoxPosition.screenX -
+    popupWidth -
     GAP;
+}
 
-  // 🔥 if not enough space above → place below
-  if (y < 10) {
-    y =
-      selectedBoxPosition.screenY +
-      selectedBoxPosition.height +
-      GAP;
-  }
+if (y + popupHeight > window.innerHeight - 20) {
+  y = window.innerHeight - popupHeight - 20;
+}
 
-  popupPosition = {
-    screenX: x,
-    screenY: y,
-  };
+if (y < 20) {
+  y = 20;
+}
+
+popupPosition = {
+  screenX: x,
+  screenY: y,
+};
 }
 
    if (!imageUrl) {
@@ -658,7 +676,7 @@ onDragEnd={(e) => {
   const rawPos = e.target.position();
   const clamped = clampPosition(rawPos);
 
-  setPosition(clamped); // ✅ ONLY HERE
+  setPosition(clamped); //  ONLY HERE
 }}
             >
               {/* IMAGE */}
@@ -666,10 +684,38 @@ onDragEnd={(e) => {
                 <KonvaImage
   image={imageObj}
   x={0}
-  y={0}
-  
+  y={0} 
 />
               )}
+              {activeTool === TOOLS.BBOX &&
+  mousePos &&
+  imageObj && (
+    <>
+      <Line
+  points={[
+    mousePos.x,
+    -50000,
+    mousePos.x,
+    50000,
+  ]}
+  stroke="#ff0000"
+  strokeWidth={1/scale}
+  listening={false}
+/>
+
+<Line
+  points={[
+    -50000,
+    mousePos.y,
+    50000,
+    mousePos.y,
+  ]}
+  stroke="#ff0000"
+  strokeWidth={1/scale}
+  listening={false}
+/>
+    </>
+)}
 
               {/* DRAWING BOX */}
               {drawingBox && (
@@ -679,7 +725,7 @@ onDragEnd={(e) => {
                   y={drawingBox.y}
                  width={drawingBox.width}
   height={drawingBox.height}
-                  stroke="#60a5fa"
+                  stroke="#f4f5f7ff"
                   dash={[4, 4]}
                   strokeWidth={0.5}
                 />
@@ -716,18 +762,18 @@ onDragEnd={(e) => {
 }}
                         stroke={
   box.id === selectedBoxId
-    ? "#39ff14"
+    ? "#ff0000"
     : box.id === hoveredBoxId
-    ? "#facc15"
-    : "#39ff14"
+    ? "#ff6b6b"
+    : "#ff0000"
 }
-                        strokeWidth={
-                          box.id === selectedBoxId
-                            ? 2
-                            : box.id === hoveredBoxId
-                            ? 2
-                            : 1.5
-                        }
+strokeWidth={
+  box.id === selectedBoxId
+    ? 2
+    : box.id === hoveredBoxId
+    ? 2
+    : 1
+}
                         draggable={
                           box.id === selectedBoxId && !isLocked
                         }
@@ -822,6 +868,27 @@ onDragEnd={(e) => {
                           boxClass?.color || "#6b7280"
                         }
                       />
+                      {box.id === selectedBoxId && (
+  <>
+    {/* WIDTH LABEL */}
+    <Text
+      x={box.x + box.width / 2 - 20}
+      y={box.y - 20}
+      text={`W:${Math.round(box.width)}`}
+      fontSize={10}
+      fill="#ffffff"
+    />
+
+    {/* HEIGHT LABEL */}
+    <Text
+      x={box.x + box.width + 6}
+      y={box.y + box.height / 2}
+      text={`H:${Math.round(box.height)}`}
+      fontSize={10}
+      fill="#ffffff"
+    />
+  </>
+)}
                    </Group>
                   );
                 })}
@@ -880,7 +947,9 @@ onDragEnd={(e) => {
         classes={classes}
         boxes={boxes}
         selectedBoxId={selectedBoxId}
+        setSelectedBoxId={setSelectedBoxId}
         setHoveredBoxId={setHoveredBoxId}
+        imageMetadata={imageMetadata}
       />
     </div>
   </div>
@@ -915,7 +984,3 @@ onDragEnd={(e) => {
   </div>
 );
 }
-
-
-
- 

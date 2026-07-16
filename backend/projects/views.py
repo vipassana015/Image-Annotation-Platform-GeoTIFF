@@ -176,7 +176,25 @@ class FileUploadView(APIView):
                     with rasterio.open(new_file.file.path) as src:
                         new_file.width = src.width
                         new_file.height = src.height
-                        new_file.save(update_fields=["width", "height"])
+                        
+                        if src.crs:
+                            new_file.crs = str(src.crs)
+                            
+                            new_file.bbox = {
+                                "left": src.bounds.left,
+                                "bottom": src.bounds.bottom,
+                                "right": src.bounds.right,
+                                "top": src.bounds.top,
+                                }
+                            
+                            new_file.save(
+                                update_fields=[
+                                    "width",
+                                    "height",
+                                    "crs",
+                                    "bbox"
+                                    ]
+                                    )
                         
                 except Exception as e:
                     print("Rasterio failed:", e)

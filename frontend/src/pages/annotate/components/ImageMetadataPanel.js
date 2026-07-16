@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export default function ImageMetadataPanel() {
-  const [open, setOpen] = useState(false);
+export default function ImageMetadataPanel({ metadata }) {
+  const [open, setOpen] = useState(true);
 
   return (
     <section className="sidebar-section metadata">
@@ -13,11 +13,48 @@ export default function ImageMetadataPanel() {
         <span>{open ? "▾" : "▸"}</span>
       </div>
 
-      {open && (
+      {open && metadata && (
         <div className="metadata-content">
-          <div>CRS: EPSG:4326</div>
-          <div>Resolution: 0.3 m/px</div>
-          <div>Bounds: …</div>
+
+          <div>
+            <strong>CRS:</strong>{" "}
+            {metadata.crs || "Not Available"}
+          </div>
+
+          <div>
+            <strong>Width:</strong>{" "}
+            {metadata.width}
+          </div>
+
+          <div>
+            <strong>Height:</strong>{" "}
+            {metadata.height}
+          </div>
+
+          {metadata.bbox && (
+            <>
+              <div>
+                <strong>Left:</strong>{" "}
+                {metadata.bbox.left?.toFixed(2)}
+              </div>
+
+              <div>
+                <strong>Bottom:</strong>{" "}
+                {metadata.bbox.bottom?.toFixed(2)}
+              </div>
+
+              <div>
+                <strong>Right:</strong>{" "}
+                {metadata.bbox.right?.toFixed(2)}
+              </div>
+
+              <div>
+                <strong>Top:</strong>{" "}
+                {metadata.bbox.top?.toFixed(2)}
+              </div>
+            </>
+          )}
+
         </div>
       )}
     </section>

@@ -7,7 +7,7 @@ from PIL import Image
 def generate_thumbnail(
     geotiff_path,
     output_path,
-    max_size=256
+    max_size=1024
 ):
     """
     Generate an aspect-ratio-preserving PNG thumbnail from a GeoTIFF.

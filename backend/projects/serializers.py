@@ -187,6 +187,10 @@ class AnnotationSerializer(serializers.ModelSerializer):
             "y",
             "width",
             "height",
+            "utm_x",
+            "utm_y",
+            "latitude",
+            "longitude",
             "created_at",
             "updated_at",
         ]

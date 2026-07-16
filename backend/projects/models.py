@@ -213,6 +213,12 @@ class Annotation(models.Model):
     y = models.FloatField()
     width = models.FloatField()
     height = models.FloatField()
+    
+    utm_x = models.FloatField(null=True, blank=True)
+    utm_y = models.FloatField(null=True, blank=True)
+    
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

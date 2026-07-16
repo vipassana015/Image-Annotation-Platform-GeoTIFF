@@ -197,10 +197,10 @@ function Home() {
           {/* Vasundharaa sponsor badge */}
           <div className="sponsor-badge">
             <span className="sponsor-label"></span>
-            <a href="https://vasundharaa.in" target="_blank" rel="noreferrer" className="sponsor-link">
+            <a href="https://www.121technologies.com" target="_blank" rel="noreferrer" className="sponsor-link">
               <img
                 src="https://vasundharaa.in/wp-content/uploads/2023/01/Vasundharaa-Logo.png"
-                alt="Vasundharaa Geo Technologies"
+                alt="I2I Techno Solutions"
                 className="sponsor-logo"
                 onError={e => {
                   e.target.style.display = 'none';
@@ -208,7 +208,7 @@ function Home() {
                 }}
               />
               <span style={{ display: 'none', color: 'var(--accent)', fontFamily: 'Space Mono', fontSize: '13px' }}>
-                Vasundharaa Geo Technologies
+                I2I Techno Solutions
               </span>
             </a>
           </div>

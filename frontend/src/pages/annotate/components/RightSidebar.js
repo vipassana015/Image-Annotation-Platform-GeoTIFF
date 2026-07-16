@@ -8,6 +8,7 @@ export default function RightSidebar({
   setHoveredBoxId, 
   classes,
   index,
+  imageMetadata,
 }) {
 
 
@@ -180,7 +181,10 @@ const unusedClasses = filteredClasses.filter(
         </section>
 
         {/* IMAGE METADATA */}
-        <ImageMetadataPanel />
+        <ImageMetadataPanel 
+         metadata={imageMetadata}
+         />
+
       </div>
     </div>
   );
