@@ -36,7 +36,7 @@ A full-stack web platform for annotating **GeoTIFF satellite and aerial imagery*
 
 ---
 
-# 🌍 Geographic Coordinate Conversion
+# Geographic Coordinate Conversion
 
 Unlike traditional annotation tools, annotations created on PNG thumbnails are converted back into their original GeoTIFF pixel locations before being transformed into real-world geographic coordinates.
 
@@ -70,7 +70,7 @@ Stored in Database & Exported
 
 ---
 
-# 🛠 Tech Stack
+#  Tech Stack
 
 ### Frontend
 
@@ -95,7 +95,7 @@ Stored in Database & Exported
 
 ---
 
-# 📷 Application Screens
+# Application Screens
 
 | Module | Screenshot |
 |---------|------------|
@@ -110,7 +110,7 @@ Stored in Database & Exported
 
 ---
 
-# 🎥 Demonstration
+#  Demonstration
 
 A walkthrough video of the platform is included in the repository.
 
