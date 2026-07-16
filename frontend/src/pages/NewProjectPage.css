@@ -1,0 +1,285 @@
+/* frontend/src/pages/NewProjectPage.css */
+
+/* Full-page background (dark, subtle texture/gradient) */
+.newproject-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+background: rgba(18,18,18,.55);
+backdrop-filter: blur(8px);
+  box-sizing: border-box;
+  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #e6eef8;
+}
+
+/* Card */
+.newproject-card {
+  width: 700px;
+  max-width: 90%;
+
+  background: #242424;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 16px;
+
+  padding: 36px;
+
+  box-shadow:
+      0 30px 80px rgba(0,0,0,.55);
+
+  animation: popup .22s ease;
+}
+
+@keyframes popup{
+
+from{
+opacity:0;
+transform:scale(.95);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+/* Header */
+.np-title {
+  margin: 0 0 6px 0;
+  text-align: center;
+  font-size: 28px;
+  color: #f3f7ff;
+  font-weight: 600;
+}
+.np-sub {
+  margin: 0 0 18px 0;
+  color: #aeb8c8;
+  font-size: 14px;
+}
+
+/* Form */
+.np-form {
+  display: block;
+}
+
+.np-label {
+  display: block;
+  margin-bottom: 14px;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.required {
+  color: #ffb4b4;
+  margin-left: 6px;
+  font-size: 13px;
+}
+
+.np-optional {
+  font-size: 12px;
+  color: #98a0b0;
+  margin-left: 8px;
+}
+
+/* Inputs */
+.np-input, .np-textarea, .np-select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: #0f1316;
+  color: #eef6ff;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.np-select {
+  width: 50%;
+}
+
+.np-input:focus, .np-textarea:focus, .np-select:focus {
+  box-shadow: 0 0 0 4px rgba(124,92,255,0.06);
+}
+
+/* textarea */
+.np-textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+/* collaborators row */
+.np-collab-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.collab-input {
+  flex: 1 1 auto;
+}
+
+/* small add button */
+.np-small-btn {
+  background: #2f3150;
+  color: #e8eefc;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.np-small-btn:hover {
+  background: #41446e;
+}
+
+/* chips */
+.np-collab-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.np-chip {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(180deg,#1b1b2a,#11121a);
+  border: 1px solid rgba(255,255,255,0.03);
+  color: #dfe9ff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.np-chip-text {
+  margin-right: 8px;
+}
+
+.np-chip-x {
+  background: transparent;
+  border: none;
+  color: #b9c6ff;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0 2px;
+}
+
+/* error text */
+.np-error {
+  background: rgba(255,50,50,0.06);
+  color: #ffd6d6;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 6px;
+  border: 1px solid rgba(255,50,50,0.12);
+}
+
+/* actions */
+.np-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 35px;
+}
+
+.np-btn-create {
+  background: #78797b;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.np-btn-create:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.np-btn-cancel {
+  background:#78797b;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #d8e2ff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ===============================
+   SELECTION ACTION BAR
+================================ */
+
+.selection-bar {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 80%;
+  max-width: 1200px;
+
+  padding: 10px 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Left text */
+.selection-bar span {
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* Right actions */
+.selection-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.selection-actions button {
+  padding: 6px 12px;
+  font-size: 13px;
+
+  background: #2a2a2a;
+  color: white;
+
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+.selection-actions button:hover {
+  background: #3a3a3a;
+}
+
+/* Remove button highlight */
+.selection-actions button:first-child {
+  background: #2a2a2a;
+  color: white;
+}
+
+.selection-actions button:first-child:hover {
+  background: #444;
+}
+
+/* Clear button */
+.clear-btn {
+  background: transparent;
+  border: 1px solid #444;
+}

@@ -1,0 +1,209 @@
+.export-page {
+  padding: 20px;
+}
+
+.export-main {
+  width: 100%;
+}
+
+.export-title {
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+
+.dataset-card:hover {
+  background: #222;
+}
+
+.dataset-card.active {
+  border-color: #6b8cff;
+  background: #2a2f45;
+}
+
+.dataset-name {
+  font-size: 15px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.dataset-count {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* EXPORT PANEL */
+.export-panel {
+  margin-top: 10px;
+  padding: 20px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+
+  width: 400px;
+}
+
+.format-options {
+  display: flex;
+  gap: 10px;
+  width: 400px; /* 🔥 CONTROL WIDTH */
+}
+
+.format-btn {
+  flex: 1;
+  padding: 10px;
+
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+
+  text-align: center;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.format-btn.active {
+  background: #2a2f45;
+  border-color: #6b8cff;
+  color: #fff;
+}
+
+.export-btn {
+  width: 400px;
+  height: 36px;
+
+  background: #3b3f5c;
+  border: 1px solid #4c5275;
+  border-radius: 6px;
+
+  color: #fff;
+  cursor: pointer;
+}
+
+.export-btn:hover {
+  background: #4a5075;
+}
+
+.separator {
+  color: #666;
+}
+
+.page-name {
+  color: #aaa;
+}
+
+
+.export-field label {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* INLINE ROW */
+.export-row-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* LABEL */
+.export-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  min-width: 80px;
+}
+
+/* SECTION TITLE (BIG TEXT) */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+
+
+
+
+/* FORMAT TITLE */
+.export-format-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* WRAPPER FIX */
+.export-section {
+  margin-bottom: 60px;
+  position: relative; 
+}
+
+/* DROPDOWN BOX */
+.custom-dropdown {
+  width: 280px;
+  height: 36px;
+  justify-content: space-between; 
+
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+
+  color: #ccc;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;   /* 🔥 back to absolute */
+  top: 44px;            /* just below dropdown */
+  left: 0;
+
+  width: 100%;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+
+  max-height: 160px;
+  overflow-y: auto;
+
+  z-index: 10;
+}
+/* ITEMS */
+.dropdown-item {
+  padding: 10px;
+  font-size: 14px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.dropdown-wrapper {
+  position: relative;
+  width: 280px;
+}
+
+.dataset-section {
+  margin-bottom: 140px;   /* 🔥 BIG RESERVED SPACE */
+}

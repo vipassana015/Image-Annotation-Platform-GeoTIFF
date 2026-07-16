@@ -1,0 +1,199 @@
+.breadcrumb-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #eaeaea;
+  font-weight: 600;
+  font-size: 20px;
+
+  margin-bottom: 24px;
+}
+
+.project-name-bc {
+  color: #fff;
+  font-weight: 700;
+}
+
+.bc-sep {
+  color: #9aa0a6;
+  font-weight: 600;
+}
+
+.current-tab {
+  color: #9aa0a6;
+  font-weight: 600;
+}
+
+.classes-header-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.classes-container {
+  width: 100%;
+  padding-top: 8px;
+}
+
+.classes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  margin-top: 24px;
+}
+
+.class-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #2a2a2a;
+  border-radius: 10px;
+  padding: 16px 20px;
+
+  transition: all 0.2s ease;
+}
+
+.class-card:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+.class-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.class-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.class-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.class-desc {
+  font-size: 12px;
+  color: #aaa;
+}
+
+
+
+.empty-state {
+  text-align: center;
+  color: #888;
+  padding: 40px 0;
+}
+
+.classes-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+.modal-actions button:last-child {
+  background: #3b3f5c;
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background: #4a5075;
+}
+
+.create-class-btn {
+  height: 36px;
+  padding: 0 16px;
+
+  background: #78797b;
+  border: 1px solid #4a5075;
+  border-radius: 8px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-class-btn:hover {
+  background: #4a5075;
+}
+
+.class-right-section {
+  flex-shrink: 0;
+}
+
+.class-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.class-usage {
+  font-size: 13px;
+  color: #888;
+  margin-right: 10px;
+}
+
+.rename-btn,
+.delete-btn {
+  height: 32px;
+  min-width: 72px;
+
+  padding: 0 14px;
+
+  border-radius: 6px;
+  border: none;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Rename */
+.rename-btn {
+  background: #1f1f1f;
+  color: #ddd;
+}
+
+.rename-btn:hover {
+  background: #2d2d2d;
+}
+
+.class-delete-btn {
+  height: 32px;
+  min-width: 72px;
+
+  padding: 0 14px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #1f1f1f;
+   color: #ddd;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.class-delete-btn:hover {
+   background: #2d2d2d;
+}

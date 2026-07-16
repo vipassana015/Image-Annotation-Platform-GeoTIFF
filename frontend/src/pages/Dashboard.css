@@ -1,3 +1,15 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  background-color: #0f1117;
+}
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+
 /* ===================== DASHBOARD LAYOUT ===================== */
 
 .dashboard {
@@ -85,19 +97,8 @@
   stroke-width: 2;
 }
 
-/* Dropdown styling remains same */
-.dropdown-panel {
-  position: absolute;
-  top: 45px;
-  left: 0;
-  width: 90%;
-  background: #2a2a2a;
-  border-radius: 10px;
-  padding: 12px;
-  z-index: 100;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
+
+
 
 
 /* ===================== DROPDOWN PANEL ===================== */
@@ -106,14 +107,27 @@
   position: absolute;
   top: 50px;
   left: 0;
+
   width: 90%;
   background: #2a2a2a;
   border-radius: 10px;
   padding: 12px;
+
   z-index: 100;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: dropdownFade 0.2s ease forwards;
 }
+
+@keyframes dropdownFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* Centered Profile Image */
 .profile-section {
@@ -267,10 +281,16 @@
 .topbar-left input[type="text"] {
   width: 80%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
   border-radius: 8px;
   background-color: #2a2a2a;
   color: white;
+  outline: none;
+}
+
+.topbar-left input[type="text"]:focus {
+  border: 1px solid #666;
+  box-shadow: 0 0 0 1px #666;
 }
 
 .filter-section {
@@ -357,13 +377,16 @@
   background: #212121;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  overflow: visible;
   transition: transform 0.25s ease;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .project-card:hover {
   transform: translateY(-4px);
+  z-index: 10;
 }
 
 /* Thumbnail container (prevents overlap issues) */
@@ -396,11 +419,13 @@
 /* Info section (bottom 1 cm approx) */
 .project-info {
   background: #434242;
+  border-radius: 0 0 12px 12px;
   padding: 3px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 30px;
+  overflow: visible;
 }
 
 /* Header row: project name + user icon */
@@ -441,9 +466,82 @@
 
 /* ===================== UPLOAD PAGE ===================== */
 
+.upload-status {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.upload-title {
+  font-size: 18px;
+  color: #b084ff;
+  font-weight: 600;
+}
+
+.upload-sub {
+  font-size: 13px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.progress-bar {
+  width: 60%;
+  height: 6px;
+  background: #2a2a2a;
+  border-radius: 10px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, #7b5cff, #b084ff);
+  animation: progressAnim 1.5s infinite;
+}
+
+@keyframes progressAnim {
+  0% { width: 10%; }
+  50% { width: 60%; }
+  100% { width: 100%; }
+}
+
+.file-list {
+  width: 100%;
+  margin: 20px auto;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.file-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #1e1e1e;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  color: #ccc;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; 
+}
+
+.file-status {
+  display: flex;
+  align-items: center;
+  color: #aaa;
+}
+
 .upload-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   background: #1e1e1e;
   color: white;
 }
@@ -466,6 +564,7 @@
 
 /* Collapsed Icon Bar */
 .sidebar-icons {
+  position: relative;
   width: 50px;
   min-width: 50px;
   background: #333233;
@@ -653,10 +752,9 @@
 .upload-main {
   flex: 1;
   padding: 20px 40px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
 
 /* Dropzone styling */
@@ -702,6 +800,108 @@
   background: #535353;
 }
 
+/* Wrapper */
+.batch-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* ================= Upload Page Dropdown Override ================= */
+
+.upload-dropdown-scope .dropdown-trigger {
+  width: 180px;
+  padding: 8px 12px;
+
+  background: #2a2a2a;
+  color: #ddd;
+
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+
+  font-size: 13px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-dropdown-scope .dropdown-trigger:hover {
+  background: #4d4d4d;
+  color: #fff;
+}
+
+.upload-dropdown-scope .dropdown-menu {
+  position: absolute;
+  top: calc(100% + 2px);
+
+  left: 50%;             
+  transform: translateX(-50%); 
+
+  width: 210px;
+
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 10px;
+
+  z-index: 10;
+}
+
+.upload-dropdown-scope .dropdown-item:hover {
+  background:#4d4d4d;
+  color: #fff;
+}
+
+.upload-dropdown-scope .dropdown-create {
+  background: transparent !important;
+  color: #ccc;
+  text-align: center;
+  font-size: 14px;
+  padding: 5px;
+}
+
+.upload-dropdown-scope .dropdown-create:hover {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.upload-dropdown-scope .dropdown-footer {
+  background: #1f1f1f !important;
+  border-top: 1px solid #333;
+}
+
+/* Input like your "Search classes" */
+.batch-input {
+  width: 240px;
+  padding: 10px 14px;
+
+  background: linear-gradient(145deg, #1c1f2a, #12141c);
+  border: 1px solid #2f3445;
+  border-radius: 12px;
+
+  color: #cfd6ff;
+  font-size: 5px;
+
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.upload-dropdown-scope .dropdown-input {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+.upload-dropdown-scope .dropdown-input:focus {
+  border-color: #555;
+  box-shadow: none;
+}
+
+
+
+
 /* Responsive */
 @media (max-width: 900px) {
   .breadcrumb-row {
@@ -715,4 +915,324 @@
   .upload-header-left {
     padding: 12px 20px;
   }
+}
+
+
+.create-project-section {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 20px 10px 20px;
+}
+
+.create-project-btn {
+  background-color: #7c5cff;
+  color: white;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.create-project-btn:hover {
+  background-color: #6a4eea;
+}
+
+
+.activity-container {
+  width: 100%;
+  max-width: 900px;
+}
+
+
+.activity-item {
+  all: unset;
+  display: block;
+  padding: 8px 0;
+} 
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+}
+
+/* each row */
+.activity-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 8px;
+  border-bottom: 1px solid #2f2f2f;
+  transition: background 0.2s;
+}
+
+.activity-row:hover {
+  background: #2a2a2a;
+}
+
+.activity-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.activity-icon {
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.activity-text {
+  margin: 0;
+  font-size: 14px;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #888;
+}
+
+/* group titles */
+.activity-group-title {
+  margin: 12px 0 6px;
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+}
+
+
+  /* Override grid ONLY for activity */
+  .project-grid.activity-mode {
+    display: flex;              /* override grid */
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+}
+
+/* each row */
+.notification-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 8px;
+  border-bottom: 1px solid #2f2f2f;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.notification-row:hover {
+  background: #2a2a2a;
+}
+
+/* unread indicator */
+.unread-dot {
+  width: 8px;
+  height: 8px;
+  background: #ddd;
+  border-radius: 50%;
+  margin-top: 6px;
+}
+
+/* content */
+.notification-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-text {
+  margin: 0;
+  font-size: 14px;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #888;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mark-all {
+  font-size: 12px;
+  background: none;
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.badge {
+  background: #9e9fa2;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.project-card {
+  position: relative;
+}
+
+.project-delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  z-index: 3;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.project-card:hover .project-delete-btn {
+  opacity: 1;
+}
+
+.sidebar-icons .dropdown-panel {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  width: 200px;
+}
+
+.icon-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* Tooltip hidden by default */
+.tooltip {
+  position: absolute;
+  left: 50px;
+  background: #1f1f1f;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateY(-50%) translateX(-5px);
+  top: 50%;
+
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* Avatar tooltip override (below placement) */
+.user-avatar-group .tooltip {
+  z-index: 10;
+  top: 120%;                /* push below avatars */
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px);
+
+  white-space: nowrap;
+}
+
+/* Hover animation (same feel as sidebar) */
+.user-avatar-group:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.user-avatar-group {
+  cursor: pointer;
+}
+
+.user-avatar-group:hover .user-avatar {
+  transform: translateY(-1px);
+  transition: transform 0.15s ease;
+}
+
+/* Show on hover */
+.icon-wrapper:hover .tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.user-avatar-group {
+  display: flex;
+  align-items: center;
+}
+
+/* avatar circle */
+.user-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+
+  background: #828282;
+  color: #fff;
+
+  font-weight: 600;
+  font-size: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #434242;
+
+  margin-left: -8px;
+}
+
+/* first avatar no overlap */
+.user-avatar:first-child {
+  margin-left: 0;
+}
+
+/* overflow +N */
+.user-avatar.extra {
+  background: #555;
+  font-size: 11px;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.primary-btn {
+  height: 38px;
+  padding: 0 18px;
+
+  background: #3b3f5c;
+  border: 1px solid #4a5075;
+  border-radius: 8px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-btn:hover {
+  background: #4a5075;
+  transform: translateY(-1px);
 }
